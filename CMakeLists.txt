@@ -107,12 +107,15 @@ set(PLATFORM_SPECIFIC_HEADERS
 )
 endif()
 
+add_subdirectory(${CMAKE_SOURCE_DIR}/external/Spriter2dX)
+
 include_directories(
   /usr/local/include/GLFW
   /usr/include/GLFW
   ${COCOS2D_ROOT}/cocos
   ${COCOS2D_ROOT}/cocos/platform
   ${COCOS2D_ROOT}/cocos/audio/include/
+  ${CMAKE_SOURCE_DIR}/external/Spriter2dX/src
   Classes
 )
 if ( WIN32 )
@@ -148,7 +151,7 @@ else()
   endif ( WIN32 )
 endif()
 
-target_link_libraries(${APP_NAME} cocos2d)
+target_link_libraries(${APP_NAME} spriter2dx cocos2d)
 
 set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")
 

@@ -1,4 +1,5 @@
 #include "HelloWorldScene.h"
+#include "AnimationNode.h"
 
 USING_NS_CC;
 
@@ -30,57 +31,51 @@ bool HelloWorld::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+    //path to your scml in your Resources folder
+    auto scml = FileUtils::getInstance()->fullPathForFilename("GreyGuy/player.scml");
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-    
-	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
+    // create an array to hold instances of our character
+    std::vector<SpriterEngine::EntityInstance*> instances;
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
+    //A AnimationNode is a container which can play multiple animations sourced from a single model.
+    auto spriter = Spriter2dX::AnimationNode::create(scml);
 
-    /////////////////////////////
-    // 3. add your codes below...
+    // add more instances until there are 100
+    while (instances.size()<100)
+    {
+        // create an instance of the entity named "Player"
+        instances.push_back(spriter->createEntity("Player"));
+        SpriterEngine::EntityInstance* inst = instances.back();
 
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    
-    // position the label on the center of the screen
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
+        if (inst)
+        {
+            // set the instance's animation to "walk"
+            inst->setCurrentAnimation("walk");
 
-    // add the label as a child to this layer
-    this->addChild(label, 1);
+            // set the instance's scale, position, and angle to something random
+            SpriterEngine::real scale = ((rand() % 1500) + 500) / 1000.0;
+            inst->setScale(SpriterEngine::point(scale, scale));
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
+            inst->setPosition(SpriterEngine::point(rand() % int(visibleSize.width), rand() % int(visibleSize.height)));
 
-    // position the sprite on the center of the screen
-    sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+            inst->setAngle(SpriterEngine::toRadians(rand() % 360));
+        }
+    }
 
-    // add the sprite as a child to this layer
-    this->addChild(sprite, 0);
-    
+    //createEntity gives you a SpriterEngine::EntityInstance that you can do whatever you want with
+    //(refer to SpriterPlusPlus API)
+    auto entity = spriter->createEntity("Player");
+    entity->setCurrentAnimation("walk");
+
+    /*
+      Adding this node to a displayed layer will automatically activate its update loop.
+      no further maintenance is required, use the EntityInstance to stop/start/switch
+      your animations and call createEntity again to setup a new animation in the
+      same layer.
+    */
+    this->addChild(spriter,1);
+    spriter->setPosition(Vec2(origin.x,visibleSize.height));
+
     return true;
 }
 
-
-void HelloWorld::menuCloseCallback(Ref* pSender)
-{
-    Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
-}

@@ -1,0 +1,3 @@
+[submodule "external/Spriter2dX"]
+	path = external/Spriter2dX
+	url = git@github.com:jeremyjh/Spriter2dX.git
