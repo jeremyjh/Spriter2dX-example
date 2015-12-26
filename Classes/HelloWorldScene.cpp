@@ -44,7 +44,7 @@ bool HelloWorld::init()
     while (instances.size()<100)
     {
         // create an instance of the entity named "Player"
-        instances.push_back(spriter->createEntity("Player"));
+        instances.push_back(spriter->play("Player"));
         SpriterEngine::EntityInstance* inst = instances.back();
 
         if (inst)
@@ -61,11 +61,6 @@ bool HelloWorld::init()
             inst->setAngle(SpriterEngine::toRadians(rand() % 360));
         }
     }
-
-    //createEntity gives you a SpriterEngine::EntityInstance that you can do whatever you want with
-    //(refer to SpriterPlusPlus API)
-    auto entity = spriter->createEntity("Player");
-    entity->setCurrentAnimation("walk");
 
     /*
       Adding this node to a displayed layer will automatically activate its update loop.
