@@ -2,7 +2,7 @@ This is a very basic example project to demonstrate use of [Spriter2dX](https://
 
 This is based on (shamelessly robbed from) the example provided in [SpriterPlusPlus](https://github.com/lucidspriter/SpriterPlusPlus).
 
-Presently Spriter2dX only supports cmake projects and has only been tested on Linux.
+Presently Spriter2dX only supports cmake and Android project files and has only been tested on Linux and Android.
 
 This repository has a lot of files due to the standard project template for Cocos2d - you may just want to take a look at the [relevant code](https://github.com/jeremyjh/Spriter2dX-example/blob/master/Classes/HelloWorldScene.cpp).
 
@@ -25,4 +25,4 @@ If you don't already have Cocos2d installed follow the instructions for [install
 
 Then, you can copy/move the Template/cocos2d folder into the root of Spriter2dX-example repository, to provide the cocos2d/ folder it expects to find there with all the required dependencies.
 
-Then you can build with cmake or cocos utility (e.g. `cocos compile -s ./ -p linux`).
+Then you can build with  cocos utility (e.g. `cocos compile -s ./ -p android`).
